@@ -10,6 +10,7 @@ from torch.utils.data import TensorDataset, DataLoader, SequentialSampler
 from transformers import AutoModelForTokenClassification
 
 from utils import init_logger, load_tokenizer
+from datetime import datetime
 
 import csv
 
@@ -76,13 +77,12 @@ def convert_input_file_to_tensor_dataset(lines,
             word_tokens = tokenizer.tokenize(word)
             if not word_tokens:
                 word_tokens = [unk_token]  # For handling the bad-encoded word
-
             tokens.extend(word_tokens)
 
             # use the real label id for all tokens of the word
-            slot_label_mask.extend([0] * (len(word_tokens)))
-
-        all_input_tokens.append(tokens) 
+            slot_label_mask.extend([0] * (len(word_tokens)))    
+        
+        # all_input_tokens.append(tokens)
         
         # Account for [CLS] and [SEP]
         special_tokens_count = 2
@@ -93,13 +93,15 @@ def convert_input_file_to_tensor_dataset(lines,
         # Add [SEP] token
         tokens += [sep_token]
         token_type_ids = [sequence_a_segment_id] * len(tokens)
-        slot_label_mask += [pad_token_label_id]
+        slot_label_mask += [-100]
 
         # Add [CLS] token
         tokens = [cls_token] + tokens
         token_type_ids = [cls_token_segment_id] + token_type_ids
-        slot_label_mask = [pad_token_label_id] + slot_label_mask
-
+        slot_label_mask = [-100] + slot_label_mask
+        
+        all_input_tokens.append(tokens)
+    
         input_ids = tokenizer.convert_tokens_to_ids(tokens)
 
         # The mask has 1 for real tokens and 0 for padding tokens. Only real tokens are attended to.
@@ -175,37 +177,38 @@ def predict(pred_config):
     preds = np.argmax(preds, axis=2)
 
     slot_label_map = {i: label for i, label in enumerate(label_lst)}
+    slot_label_map['-100'] = ['-100']
     preds_list = [[] for _ in range(preds.shape[0])]
 
     for i in range(preds.shape[0]):
       for j in range(preds.shape[1]):
-          if all_slot_label_mask[i, j] != pad_token_label_id:
-              preds_list[i].append(slot_label_map[preds[i][j]])
+            if all_slot_label_mask[i, j] != pad_token_label_id:
+                preds_list[i].append(slot_label_map[preds[i][j]])
 
     # Write to output file
     with open(pred_config.output_file, "w", encoding="utf-8") as output:
 
-      f = csv.writer(output, quoting=csv.QUOTE_NONE, delimiter='\t', quotechar='',escapechar='\\')
+      f = csv.writer(output, quoting=csv.QUOTE_NONE, delimiter='\t', quotechar='', escapechar='\\')
       
       for words, preds in zip(all_input_tokens, preds_list):
-
-        if words != '[SEP]':
-          words = words[:len(words)-1]
-          assert len(words) == len(preds)
-          sen = ' '.join(words)
-          tag = ' '.join(str(e) for e in preds)
-          f.writerow([sen, tag])
+        preds = [-100] + preds + [-100]
+        assert len(words) == len(preds)
+        sen = ' '.join(words)
+        tag = ' '.join(str(e) for e in preds)
+        f.writerow([sen, tag])
 
     logger.info("Pre-Labeling Done!")
 
 
 if __name__ == "__main__":
     init_logger()
+    
+    OUTPUT_FILE = datetime.now().strftime('%Y%m%d') # 대문자는 YYYY, 소문자는 YY로 출력됨 
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--input_file", default="prelabeling_sample.txt", type=str, help="Input file for prediction")
     # parser.add_argument("--train_file", default="./")
-    parser.add_argument("--output_file", default="sample_pred_out.txt", type=str, help="Output file for prediction")
+    parser.add_argument("--output_file", default="prelabeled_{}.txt".format(OUTPUT_FILE), type=str, help="Output file for prediction")
     parser.add_argument("--model_dir", default="./model", type=str, help="Path to save, load model")
 
     parser.add_argument("--batch_size", default=32, type=int, help="Batch size for prediction")
