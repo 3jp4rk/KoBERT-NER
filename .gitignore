@@ -129,6 +129,7 @@ venv.bak/
 
 #### model directory
 model/
+model_old/
 test/
 
 

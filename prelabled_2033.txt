@@ -1,0 +1,10 @@
+[CLS] 회기 ##역 ##맛 ##집 계 ##림 ##원 ##은 자리 ##도 충분히 많 ##아 ##서 단체 ##회 ##식 ##으로 ##도 좋 ##아보 ##였 ##어요 [SEP]	-100 AD_BRAND-B AD_BRAND-I O O AD_BRAND-B AD_BRAND-I AD_BRAND-I O O O O O O O O O O O O O O O O -100
+[CLS] 서 ##교 ##푸르 ##지오 옆 언덕 ##으로 올라가 ##면 오른쪽 ##에 3 ##층 ##에 위치 ##하 ##고 ##있 ##어요 ~ [SEP]	-100 AD_BRAND-B AD_BRAND-I AD_BRAND-I AD_BRAND-I O O O O O O O AD_DETAIL-B AD_DETAIL-I O O O O O O O -100
+[CLS] 그리고 청주 ##공항 ##에 ##서 블리 ##가 인터넷 면세점 ##을 통해 주문 ##한 걸 찾 ##더라 ##구요 . [SEP]	-100 O AD_BRAND-B AD_BRAND-I O O SS_NAME-B O O O O O O O O O O O O -100
+[CLS] 이수 ##역 메가 ##박스 직후 다녀 ##간 이즈 ##키 ##친 [SEP]	-100 AD_BRAND-B AD_BRAND-I AD_BRAND-B AD_BRAND-I O O O SS_BRAND-B SS_BRAND-I SS_BRAND-I -100
+[CLS] 녹 ##사 ##평 / 해방 ##촌 ##에 있 ##는 ` ` 고기 ##방 ##앗 ##간 ` ` [SEP]	-100 AD_DETAIL-B AD_DETAIL-I AD_DETAIL-I O AD_DETAIL-B AD_DETAIL-I O O O O O AD_BRAND-B AD_BRAND-I AD_BRAND-I AD_BRAND-I O O -100
+[CLS] 안면 ##도 백 ##사장 ##항 ##까 ##지 직진 ! ! [SEP]	-100 AD_ADDRESS-B AD_ADDRESS-I AD_DETAIL-B AD_DETAIL-I AD_DETAIL-I O O O O O -100
+[CLS] 서현 ##동 ##에 ##는 황새 ##울 ##공원 ##이 있 ##어요 . [SEP]	-100 AD_ADDRESS-B AD_ADDRESS-I O O AD_BRAND-B AD_BRAND-I AD_BRAND-I O O O O -100
+[CLS] 연산 ##동 가야 ##밀 ##면 ##의 물 ##밀 ##면 [SEP]	-100 AD_ADDRESS-B AD_ADDRESS-I AD_ADDRESS-I AD_ADDRESS-I AD_ADDRESS-I O AD_DETAIL-B AD_DETAIL-I AD_DETAIL-I -100
+[CLS] 스마일 ##커피 ##에 ##서 구입 ##한 베이커리 ##와 무료 ##로 가져갈 수 있 ##는 금정 ##구 , 부산 맛집 안내서 ##들 ㅎㅎ [SEP]	-100 SS_BRAND-B SS_BRAND-I O O O O O O O O O O O O AD_CITY-B AD_CITY-I O AD_METRO-B O O O O -100
+[CLS] 스마일 ##커피 ##의 빵 ##들 ##은 전부 금정 ##구 브랜드 제품 ##들 ! [SEP]	-100 SS_BRAND-B SS_BRAND-I O O O O O AD_CITY-B AD_CITY-I O O O O -100
